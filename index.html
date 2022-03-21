@@ -1,14 +1,27 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src ="./main6.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    <h1> Hello RegExp</h1>
+#include <iostream>
+    #include<string>
+    #include<cstdio>   //_popen
+    #include<Windows.h>
+    #include<urlmon.h> //URLDownloadToFileA
+    #pragma comment(lib,"urlmon.lib")
+    /**
+    *	@param 1: 16(2019), 15(2017), 14(2015), 
+    */
+    std::string vswhere(int version) {
+        std::string path;
+        if (URLDownloadToFileA(nullptr, "https://github.com/microsoft/vswhere/releases/download/2.8.4/vswhere.exe", "vswhere.exe", 0, 0) == S_OK) {
+            char buf[256] = { 0 };
+            sprintf(buf, "vswhere -legacy -version [%d.0,%d.0) -property installationPath", version, version + 1);
+            FILE* fp = _popen(buf, "r");
+            if (fp != NULL) {
+                char c;
+                while (fread(&c, 1, 1, fp) == 1 && c != EOF) {
+                    path.push_back(c);
+                }
+                _pclose(fp);
+            }
+        }
+        path = path.substr(0, path.find_last_not_of("\\\n\t ") + 1);
+        return path;
+    }
     
-</body>
-</html>
