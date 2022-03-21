@@ -9,4 +9,4 @@ function hello(b: number){
 
 }
 
-hello('Mark'); //숫자만 들어올수있음
+//hello('Mark'); //숫자만 들어올수있음
